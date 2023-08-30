@@ -221,7 +221,7 @@ align-items: center;
     position: absolute;
     z-index: 103;
     top: 70vh;
-    right: 1vw;
+    right: 0.5vw;
     height: 100px;
     width: 40px;
     border-radius: 15px;

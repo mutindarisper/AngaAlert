@@ -5,6 +5,12 @@ import './Map.css'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import axios from 'axios'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css"
+import { toast } from 'react-toastify'
+// import { ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
+// import { toast } from 'react-toastify';
 
 const Map = () => {
     const mapContainer = useRef(null);
@@ -24,7 +30,7 @@ const Map = () => {
         map.current.setZoom(map.current.getZoom() - 1)
       }
 
-      const addNO2Layer = () => {
+      const addNO2Layer = async () => {
         
         setParameter(parameter_ref.current)
         console.log(parameter_ref.current, 'clicked parameter')
@@ -33,43 +39,53 @@ const Map = () => {
 
           // map.current.removeLayer('wms-test-layer')
           // map.current.removeSource('wms-test-layer')
+
+          try {
+
+            if (map.current.getLayer('wms-test-layer')) {
+              map.current.removeLayer('wms-test-layer');
+            }
+            if (map.current.getSource('wms-test-source')) {
+              map.current.removeSource('wms-test-source');
+  
+            }
+  
+  
+           
+  
+         await map.current.addSource('wms-test-source', {
+              'type': 'raster',
+              // use the tiles option to specify a WMS tile source URL
+              // https://maplibre.org/maplibre-style-spec/sources/
+              'tiles': [
+                `http://localhost:8005/geoserver/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&transparent=true&layers=realtime_air_quality:Global_${parameter_ref.current}`
+              ],
+              // 'tileSize': 256
+          }); 
+        
+  
+        
+        map.current.addLayer(
+            {
+                'id': 'wms-test-layer',
+                'type': 'raster',
+                'source': 'wms-test-source',
+                'paint': {
+                  'raster-opacity': 0.5
+                }
+            },
+            //'aeroway_fill'
+        );
+            
+          } catch (error) {
+            toast.error('Requested data is not available', { position: toast.POSITION.TOP_CENTER })
+            console.error(error);
+            
+          }
            
 
 
-          if (map.current.getLayer('wms-test-layer')) {
-            map.current.removeLayer('wms-test-layer');
-          }
-          if (map.current.getSource('wms-test-source')) {
-            map.current.removeSource('wms-test-source');
-
-          }
-
-
-         
-
-          map.current.addSource('wms-test-source', {
-            'type': 'raster',
-            // use the tiles option to specify a WMS tile source URL
-            // https://maplibre.org/maplibre-style-spec/sources/
-            'tiles': [
-              `http://localhost:8005/geoserver/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&transparent=true&layers=realtime_air_quality:Global_${parameter_ref.current}`
-            ],
-            // 'tileSize': 256
-        }); 
-      
-
-      
-      map.current.addLayer(
-          {
-              'id': 'wms-test-layer',
-              'type': 'raster',
-              'source': 'wms-test-source',
-              'paint': {
-                'raster-opacity': 0.5
-              }
-          },
-          //'aeroway_fill'
-      );
+          
         }
 
       }
@@ -284,9 +300,9 @@ const Map = () => {
 {
   params.map((param) => 
 
-  <button className="btn" type="button"  key={param}>
+  <button className="btn" type="button"  key={param}  onClick={ () => {parameter_ref.current = param; addNO2Layer()}}>
   <p className="gasses"  
-  onClick={ () => {parameter_ref.current = param; addNO2Layer()}}
+ 
   
   >{param}</p>
   <div id="container-stars">
@@ -309,6 +325,11 @@ const Map = () => {
         <RemoveIcon onClick={zoomout}/>
        
      </div>
+     
+
+     <div className="" >
+      <ToastContainer />
+    </div>
 
       </div>
       
