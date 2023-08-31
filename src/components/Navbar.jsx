@@ -25,9 +25,9 @@ const Navbar = () => {
        
     <span>AngaAlert</span>
     <br />
-    <p className='tagline'>Providing Real time Air Quality data around the World</p>
+    <p className='tagline'>Providing Realtime Air Quality data around the World</p>
 
-    <input type="text" name="" id="city" placeholder='Search City...' />
+    {/* <input type="text" name="" id="city" placeholder='Search City...' /> */}
     <p className="date"> {`${daylist[day]} ${today_date} ${monthNames[month]} ${year}`}</p>
     </div>
   )

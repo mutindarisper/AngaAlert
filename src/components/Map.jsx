@@ -11,14 +11,30 @@ import { toast } from 'react-toastify'
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // import { toast } from 'react-toastify';
+import { MapLibreSearchControl } from "@stadiamaps/maplibre-search-box";
+import "@stadiamaps/maplibre-search-box/dist/style.css";
+
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import mapboxgl from 'maplibre-gl';
 
 const Map = () => {
     const mapContainer = useRef(null);
     const map = useRef(null);
+    const latitude = useRef(null);
+    const longitude = useRef(null);
+    const city = useRef(null);
+    const air_quality_index = useRef(null);
+    const category = useRef(null);
     const parameter_ref = useRef(null);
     const [lng] = useState(-1.26);
     const [lat] = useState(36.8);
     const [zoom] = useState(2);
+    const [placename, setPlacename] = useState(null)
+    const [index, setIndex] = useState(null)
+    // const [level, setLevel] = useState(null)
+    const [aqiclass, setAqiClass] = useState(null)
+    const [pollutant, setPollutant] = useState(null)
     const [parameter, setParameter] = useState(null)
     const [API_KEY] = useState('100185d0ef77f44a0e3f2608acf2516bd6ff0a6a97232bbe0a76b986b7c123cf');
     const params = ['CO', 'NO2',  'SO2', 'Ozone', 'PM 2.5', 'PM 10']
@@ -89,6 +105,14 @@ const Map = () => {
         }
 
       }
+
+      // const fetchAirQuality = async () => { 
+      //   const response = await axios.get(`https://api.ambeedata.com/latest/by-lat-lng?lat=${latitude.current}&lng=${longitude.current}&x-api-key=${API_KEY}`)
+      //   console.log(response.data)
+      //   // var dataset = response.data
+      //   // let mygeojson = {"type": "FeatureCollection", "features": []}
+      // }
+      
 
       const addHeatMap = async () => {
         const response = await axios.get(`https://api.ambeedata.com/latest/by-country-code?countryCode=KE&x-api-key=${API_KEY}`)
@@ -257,7 +281,7 @@ const Map = () => {
       
       
       }
-      
+     
 
     useEffect(() => {
         if (map.current) return; // stops map from intializing more than once
@@ -280,6 +304,75 @@ const Map = () => {
        
         
     });
+    const control = new MapLibreSearchControl({
+      useMapFocusPoint: true,
+      onResultSelected: async (feature) => 
+      { console.log(feature)
+        latitude.current = feature.geometry.coordinates[1]
+        longitude.current = feature.geometry.coordinates[0]
+
+        const response = await axios.get(`https://api.ambeedata.com/latest/by-lat-lng?lat=${latitude.current}&lng=${longitude.current}&x-api-key=${API_KEY}`)
+        const airvisual_response = await axios.get(`https://api.airvisual.com/v2/nearest_city?lat=${latitude.current}&lon=${longitude.current}&key=3c715335-77ae-4e5d-9141-02781f31f9d9`)
+        console.log(response.data.stations)
+        console.log(airvisual_response.data.data.current, 'air visual data')
+        // console.log(response.data.stations[0].aqiInfo.category, 'category')
+         city.current = response.data.stations[0].city
+         setPlacename(response.data.stations[0].city)
+
+
+         air_quality_index.current = airvisual_response.data.data.current.pollution.aqius
+        //  setIndex(response.data.stations[0].AQI)
+         setIndex(air_quality_index.current )
+        // category.current = response.data.stations[0].aqiInfo.category
+
+        console.log(air_quality_index.current, 'AQI') //
+
+        if(index <= 50) {
+          setAqiClass('Good')
+
+        }
+
+        if(index >= 51 && index <= 100) {
+          setAqiClass('Moderate')
+
+        }
+        if(index >= 101 && index <= 150) {
+          setAqiClass('Unhealthy for Sensitive Groups')
+
+        }
+        if(index >= 151 && index <= 200) {
+          setAqiClass('Unhealthy')
+
+        }
+        if(index >= 201 && index <= 300) {
+          setAqiClass('Very Unhealthy')
+
+        }
+        if(index > 300) {
+          setAqiClass('Harzardous')
+
+        }
+
+
+
+
+
+
+
+        // setLevel(response.data.stations[0].aqiInfo.category)
+        setPollutant(airvisual_response.data.data.current.pollution.mainus)
+        // var dataset = response.data
+        // let mygeojson = {"type": "FeatureCollection", "features": []}
+      
+      
+      
+      } 
+      
+    });
+    map.current.addControl(control, "top-right"
+    //  onResultSelected: true
+);
+
 
 
 
@@ -318,22 +411,39 @@ const Map = () => {
   )
 }
 
-     <div className="mapcontrols">
+      </div>
+
+      <div className="" >
+      <ToastContainer />
+    </div>
+
+      <div className="mapcontrols">
         <AddIcon onClick={zoomin} />
         <div className='separate' style={{width:'30px', border:' grey 1px solid'}}>
         </div>
         <RemoveIcon onClick={zoomout}/>
        
      </div>
-     
 
-     <div className="" >
-      <ToastContainer />
-    </div>
+      {/* add stats panel */}
+    <div className="stats_panel">
+      
+      <div className="aqi_info">
+      <p className="placename">{placename}</p>
+      <br />
 
+      <p className="air">Air Quality Index</p>
+      <p className="index">{index}</p>
+      <br />
+      <p className="level">{ aqiclass}</p>
+      <p className="pollutant">Main Pollutant: {pollutant}</p>
       </div>
       
-    {/* //</div> */}
+      
+    
+      </div>
+      
+    
     </>
    
   )
