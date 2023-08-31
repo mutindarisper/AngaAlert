@@ -17,9 +17,19 @@
     padding: 20px;
     margin: 0;
     margin-left: -2.5vw;
-    margin-top: -1.3vh;
+    margin-top: -3vh;
     font-size: 50px;
     font-weight: 700;
+  }
+  .tagline {
+    
+    /* padding: 20px; */
+    margin: 0;
+    margin-left: -13.5vw;
+    margin-top: 7vh;
+    font-size: 14px;
+    font-weight: 500;
+    width: 20%;
   }
   #city{
     margin-left: 25vw;
@@ -34,7 +44,7 @@ background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%);
     font-size: 20px; font-weight: 500; color: #fff; padding-left: 30px;
   }
   .date{
-    margin-left: 26vw;
+    margin-left: 60vw;
     margin-top: 4vh;
     /* z-index: 105; */
     /* width: 280px; */
