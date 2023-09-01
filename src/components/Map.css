@@ -298,7 +298,19 @@ cursor: pointer;
     margin-inline-end: 0px;
   }
   .level{
-    font-size:26px;
+    display: flex;
+    flex-direction: row;
+    font-size:19px;
+    font-weight: bold;
+    display: block;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+
+  }
+  .level2{
+    font-size:20px;
     font-weight: bold;
     display: block;
     margin-block-start: 0px;
@@ -319,6 +331,10 @@ cursor: pointer;
   }
   .speedometer{
     padding: 20px;
+    /* margin: 20px; */
+  }
+  g.label{
+    padding: 20px;
   }
   .chart_container{
     color: #fff;
@@ -331,4 +347,11 @@ cursor: pointer;
     height: 250px;
     margin-top: 50px;
     /* background-color: aqua; */
+  }
+  text.segment-value{
+    padding-top: 10px;
+  }
+  .input-container{
+    background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%);
+
   }

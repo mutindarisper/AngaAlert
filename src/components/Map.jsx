@@ -24,6 +24,7 @@ const Map = () => {
     const longitude = useRef(null);
     const city = useRef(null);
     const air_quality_index = useRef(null);
+    const colour = useRef(null);
     const category = useRef(null);
     const parameter_ref = useRef(null);
     const [lng] = useState(-1.26);
@@ -33,6 +34,7 @@ const Map = () => {
     const [index, setIndex] = useState(null)
     // const [level, setLevel] = useState(null)
     const [aqiclass, setAqiClass] = useState('')
+    const [color, setcolor] = useState(null)
     const [pollutant, setPollutant] = useState(null)
     const [parameter, setParameter] = useState(null)
     const [API_KEY] = useState('100185d0ef77f44a0e3f2608acf2516bd6ff0a6a97232bbe0a76b986b7c123cf');
@@ -314,7 +316,8 @@ const Map = () => {
         const airvisual_response = await axios.get(`https://api.airvisual.com/v2/nearest_city?lat=${latitude.current}&lon=${longitude.current}&key=3c715335-77ae-4e5d-9141-02781f31f9d9`)
         console.log(response.data.stations)
         console.log(airvisual_response.data.data.current, 'air visual data')
-        // console.log(response.data.stations[0].aqiInfo.category, 'category')
+        // console.log(response.data.stations[0].lat, response.data.stations[0].lng, 'coords')
+
          city.current = response.data.stations[0].city
          setPlacename(response.data.stations[0].city)
 
@@ -329,51 +332,163 @@ const Map = () => {
         // category.current = response.data.stations[0].aqiInfo.category
 
         console.log(air_quality_index.current, 'AQI') //
+        
 
-        if(air_quality_index.current <= 50) {
-          category.current = 'Good'
-         return setAqiClass(category.current)
 
-        } else if (air_quality_index.current >= 51 && air_quality_index.current <= 100) {
-          category.current = 'Moderate'
-          return setAqiClass(category.current)
+        const circleMarkerData = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [response.data.stations[0].lng, response.data.stations[0].lat],
+              },
+              properties: {
+                title: 'My CircleMarker',
+                aqi_count:air_quality_index.current
+              },
+            },
+          ],
+        };
+
+
+
+        
+        if (map.current.getLayer('circle-marker-layer')) {
+          map.current.removeLayer('circle-marker-layer');
+        }
+        if (map.current.getLayer('text-label-layer')) {
+          map.current.removeLayer('text-label-layer');
+        }
+        if (map.current.getSource('circle-marker-source')) {
+          map.current.removeSource('circle-marker-source');
 
         }
-        else if (air_quality_index.current >= 101 && air_quality_index.current <= 150) {
-          category.current = 'Unhealthy for Sensitive Groups'
-          return setAqiClass(category.current)
+        if (map.current.getSource('text-label-layer')) {
+          map.current.removeSource('text-label-layer');
 
         }
-        else if (air_quality_index.current >= 151 && air_quality_index.current <= 200) {
-          category.current = 'Unhealthy'
-         return setAqiClass(category.current)
 
-        }
-        else if(air_quality_index.current >= 201 && air_quality_index.current <= 300) {
-          category.current = 'Very Unhealthy'
-          return setAqiClass(category.current)
+          // Add a source with your CircleMarker data
+  map.current.addSource('circle-marker-source', {
+    type: 'geojson',
+    data: circleMarkerData,
+  });
 
-        }
-        else if(air_quality_index.current > 300) {
-          category.current = 'Harzardous'
-          setAqiClass(category.current)
+  
+const classRules = () =>  {
+  
+  if(air_quality_index.current <= 50) {
+    category.current = 'Good'
+    colour.current = "#94fe83"
+    setcolor(colour.current)
+   return setAqiClass(category.current)
 
-        } else{
-          return setAqiClass('unknown')
-        }
+  } else if (air_quality_index.current >= 51 && air_quality_index.current <= 100) {
+    category.current = 'Moderate'
+    colour.current = "#ffe606"
+    setcolor(colour.current)
+    return setAqiClass(category.current)
+
+  }
+  else if (air_quality_index.current >= 101 && air_quality_index.current <= 150) {
+    category.current = 'Unhealthy for Sensitive Groups'
+    colour.current = "#f09642"
+    setcolor(colour.current)
+    return setAqiClass(category.current)
+
+  }
+  else if (air_quality_index.current >= 151 && air_quality_index.current <= 200) {
+    category.current = 'Unhealthy'
+    colour.current = "#f54646"
+    setcolor(colour.current)
+   return setAqiClass(category.current)
+
+  }
+  else if(air_quality_index.current >= 201 && air_quality_index.current <= 300) {
+    category.current = 'Very Unhealthy'
+    colour.current = "#f026d0"
+    setcolor(colour.current)
+    return setAqiClass(category.current)
+
+  }
+  else if(air_quality_index.current > 300) {
+    category.current = 'Harzardous'
+    colour.current = "#644508"
+    setcolor(colour.current)
+    setAqiClass(category.current)
+
+  } else{
+    return setAqiClass('unknown')
+  }
+
+
+}
+classRules()
+
+// Add a layer for the CircleMarker
+map.current.addLayer({
+  id: 'circle-marker-layer',
+  type: 'circle',
+  source: 'circle-marker-source',
+  paint: {
+    'circle-radius': air_quality_index.current,
+    'circle-color':colour.current ,
+    'circle-opacity':.8 ,
+    
+  }
+  
+});
+
+const popup = new maplibregl.Popup({
+  closeButton: false, // Display a close button or not
+  closeOnClick: false, // Close the popup when the map is clicked
+}).setHTML(`<strong>Concentrations</strong>
+<br> <strong>Nitrogen dioxide: ${response.data.stations[0].NO2}</strong>
+ <br> <strong> Sulphur dioxide: ${response.data.stations[0].SO2}</strong>
+ <br> <strong> Carbon Monoxide: ${response.data.stations[0].CO}</strong>
+ <br> <strong> Ozone: ${response.data.stations[0].OZONE}</strong>
+ <br> <strong> PM 10: ${response.data.stations[0].PM10}</strong>
+ <br> <strong> PM 2.5: ${response.data.stations[0].PM25}</strong>`); // Set the popup content
+
+
+// Add a SymbolLayer for the text label
+map.current.addLayer({
+  id: 'text-label-layer',
+  type: 'symbol',
+  source: {
+    type: 'geojson',
+    data: {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [response.data.stations[0].lng, response.data.stations[0].lat],
+      },
+      properties: {
+        label: air_quality_index.current, // Your label content (e.g., a number)
+      },
+    },
+  },
+  layout: {
+    'text-field': ['get', 'label'],
+    'text-size': 16,
+    // 'text-offset': [0, -15], // Adjust this value to position the label relative to the circle
+    'text-anchor': 'top',
+  },
+  paint: {
+    'text-color': 'black',
+  },
+});
+
+ // Create a marker and bind the popup
+ const marker = new maplibregl.Marker()
+ .setLngLat([response.data.stations[0].lng, response.data.stations[0].lat])
+ .addTo(map.current)
+ .setPopup(popup);
 
 
 
-
-
-
-
-        // setLevel(response.data.stations[0].aqiInfo.category)
-       
-        // var dataset = response.data
-        // let mygeojson = {"type": "FeatureCollection", "features": []}
-      
-      
       
       } 
       
@@ -435,7 +550,9 @@ const Map = () => {
      </div>
 
       {/* add stats panel */}
-    <div className="stats_panel">
+    {
+      index != null ? 
+      <div className="stats_panel">
       
       <div className="aqi_info">
       <p className="placename">{placename}</p>
@@ -444,8 +561,10 @@ const Map = () => {
       <p className="air">Air Quality Index</p>
       <p className="index">{index}</p>
       <br />
-      <p className="level">{ aqiclass}</p>
+      <div className="leves" style={{display:'flex', flexDirection:'row'}}>
+      <p className="level">Pollution Level: <span className='level2'>{ aqiclass}</span> </p>
       <p className="pollutant">Main Pollutant: {pollutant}</p>
+      </div>
       </div>
 
       <div className="chart_container">
@@ -461,12 +580,47 @@ const Map = () => {
         labelFontSize='16px'
         customSegmentStops={[0, 50, 100, 150, 200, 300, 400]}
         segmentColors={["#94fe83", "#ffe606", "#f09642", "#f54646", "#f026d0", "#644508"]}
+        // customSegmentLabels={[
+        //   {
+        //     text: "Good",
+        //     position: "INSIDE",
+        //     color: "#555",
+        //   },
+        //   {
+        //     text: "Moderate",
+        //     position: "INSIDE",
+        //     color: "#555",
+        //   },
+        //   {
+        //     text: "Unhealthy for Sensitive Groups",
+        //     position: "INSIDE",
+        //     color: "#555",
+        //     // fontSize: "19px",
+        //   },
+        //   {
+        //     text: "Unhealthy",
+        //     position: "INSIDE",
+        //     color: "#555",
+        //   },
+        //   {
+        //     text: "Very Unhealthy",
+        //     position: "INSIDE",
+        //     color: "#555",
+        //   },
+        //   {
+        //     text: "Hazardous",
+        //     position: "INSIDE",
+        //     color: "#555",
+        //   },
+        // ]}
       />
       </div>
       
       
     
       </div>
+      : ''
+    }
       
     
     </>
