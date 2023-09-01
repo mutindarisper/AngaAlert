@@ -13,10 +13,9 @@ import { toast } from 'react-toastify'
 // import { toast } from 'react-toastify';
 import { MapLibreSearchControl } from "@stadiamaps/maplibre-search-box";
 import "@stadiamaps/maplibre-search-box/dist/style.css";
+import ReactSpeedometer from "react-d3-speedometer";
+// import GaugeChart from './charts/GaugeChart';
 
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import mapboxgl from 'maplibre-gl';
 
 const Map = () => {
     const mapContainer = useRef(null);
@@ -320,6 +319,10 @@ const Map = () => {
          setPlacename(response.data.stations[0].city)
 
 
+         setPollutant(airvisual_response.data.data.current.pollution.mainus)
+         console.log(pollutant, 'polutant')
+
+
          air_quality_index.current = airvisual_response.data.data.current.pollution.aqius
         //  setIndex(response.data.stations[0].AQI)
          setIndex(air_quality_index.current )
@@ -366,7 +369,7 @@ const Map = () => {
 
 
         // setLevel(response.data.stations[0].aqiInfo.category)
-        setPollutant(airvisual_response.data.data.current.pollution.mainus)
+       
         // var dataset = response.data
         // let mygeojson = {"type": "FeatureCollection", "features": []}
       
@@ -443,6 +446,22 @@ const Map = () => {
       <br />
       <p className="level">{ aqiclass}</p>
       <p className="pollutant">Main Pollutant: {pollutant}</p>
+      </div>
+
+      <div className="chart_container">
+      {/* <h2>Gauge Chart Example</h2> */}
+      <ReactSpeedometer
+        value={index} // Set the value you want to display on the gauge
+        minValue={0} // Minimum value for the gauge
+        maxValue={400} // Maximum value for the gauge
+        width={300} // Width of the gauge chart
+        height={200} // Height of the gauge chart
+        needleColor="red" // Color of the needle
+        textColor='#fff'
+        labelFontSize='16px'
+        customSegmentStops={[0, 50, 100, 150, 200, 300, 400]}
+        segmentColors={["#94fe83", "#ffe606", "#f09642", "#f54646", "#f026d0", "#644508"]}
+      />
       </div>
       
       
