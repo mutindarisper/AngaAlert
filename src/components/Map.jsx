@@ -33,7 +33,7 @@ const Map = () => {
     const [placename, setPlacename] = useState(null)
     const [index, setIndex] = useState(null)
     // const [level, setLevel] = useState(null)
-    const [aqiclass, setAqiClass] = useState(null)
+    const [aqiclass, setAqiClass] = useState('')
     const [pollutant, setPollutant] = useState(null)
     const [parameter, setParameter] = useState(null)
     const [API_KEY] = useState('100185d0ef77f44a0e3f2608acf2516bd6ff0a6a97232bbe0a76b986b7c123cf');
@@ -327,30 +327,36 @@ const Map = () => {
 
         console.log(air_quality_index.current, 'AQI') //
 
-        if(index <= 50) {
-          setAqiClass('Good')
+        if(air_quality_index.current <= 50) {
+          category.current = 'Good'
+         return setAqiClass(category.current)
+
+        } else if (air_quality_index.current >= 51 && air_quality_index.current <= 100) {
+          category.current = 'Moderate'
+          return setAqiClass(category.current)
 
         }
-
-        if(index >= 51 && index <= 100) {
-          setAqiClass('Moderate')
-
-        }
-        if(index >= 101 && index <= 150) {
-          setAqiClass('Unhealthy for Sensitive Groups')
+        else if (air_quality_index.current >= 101 && air_quality_index.current <= 150) {
+          category.current = 'Unhealthy for Sensitive Groups'
+          return setAqiClass(category.current)
 
         }
-        if(index >= 151 && index <= 200) {
-          setAqiClass('Unhealthy')
+        else if (air_quality_index.current >= 151 && air_quality_index.current <= 200) {
+          category.current = 'Unhealthy'
+         return setAqiClass(category.current)
 
         }
-        if(index >= 201 && index <= 300) {
-          setAqiClass('Very Unhealthy')
+        else if(air_quality_index.current >= 201 && air_quality_index.current <= 300) {
+          category.current = 'Very Unhealthy'
+          return setAqiClass(category.current)
 
         }
-        if(index > 300) {
-          setAqiClass('Harzardous')
+        else if(air_quality_index.current > 300) {
+          category.current = 'Harzardous'
+          setAqiClass(category.current)
 
+        } else{
+          return setAqiClass('unknown')
         }
 
 
@@ -380,7 +386,7 @@ const Map = () => {
 
 
       
-      }, [ lng, lat, zoom]);
+      }, [ lng, lat, zoom, aqiclass]);
   return (
     <> 
      {/* <div className="map-wrap"> */}
