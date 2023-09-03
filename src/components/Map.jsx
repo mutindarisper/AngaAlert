@@ -342,7 +342,7 @@ const Map = () => {
               type: 'Feature',
               geometry: {
                 type: 'Point',
-                coordinates: [response.data.stations[0].lng, response.data.stations[0].lat],
+                coordinates: [feature.geometry.coordinates[0], feature.geometry.coordinates[1]],
               },
               properties: {
                 title: 'My CircleMarker',
@@ -463,7 +463,7 @@ map.current.addLayer({
       type: 'Feature',
       geometry: {
         type: 'Point',
-        coordinates: [response.data.stations[0].lng, response.data.stations[0].lat],
+        coordinates:  [feature.geometry.coordinates[0], feature.geometry.coordinates[1]],
       },
       properties: {
         label: air_quality_index.current, // Your label content (e.g., a number)
@@ -483,7 +483,7 @@ map.current.addLayer({
 
  // Create a marker and bind the popup
  const marker = new maplibregl.Marker()
- .setLngLat([response.data.stations[0].lng, response.data.stations[0].lat])
+ .setLngLat( [feature.geometry.coordinates[0], feature.geometry.coordinates[1]])
  .addTo(map.current)
  .setPopup(popup);
 
