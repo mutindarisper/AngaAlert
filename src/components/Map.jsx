@@ -88,7 +88,7 @@ const Map = () => {
                 'type': 'raster',
                 'source': 'wms-test-source',
                 'paint': {
-                  'raster-opacity': 0.5
+                  'raster-opacity': 0.3
                 }
             },
             //'aeroway_fill'
@@ -433,7 +433,7 @@ map.current.addLayer({
   type: 'circle',
   source: 'circle-marker-source',
   paint: {
-    'circle-radius': air_quality_index.current,
+    'circle-radius': air_quality_index.current / 2,
     'circle-color':colour.current ,
     'circle-opacity':.8 ,
     
@@ -482,12 +482,12 @@ map.current.addLayer({
 });
 
  // Create a marker and bind the popup
- const marker = new maplibregl.Marker()
- .setLngLat( [feature.geometry.coordinates[0], feature.geometry.coordinates[1]])
- .addTo(map.current)
- .setPopup(popup);
+//  const marker = new maplibregl.Marker()
+//  .setLngLat( [feature.geometry.coordinates[0], feature.geometry.coordinates[1]])
+//  .addTo(map.current)
+//  .setPopup(popup);
 
-
+//decided to remove the marker for now
 
       
       } 
