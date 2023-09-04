@@ -221,7 +221,7 @@ align-items: center;
     position: absolute;
     z-index: 103;
     top: 85vh;
-    left: 1vw;
+    right: 1vw;
     height: 100px;
     width: 40px;
     border-radius: 15px;
@@ -355,3 +355,21 @@ cursor: pointer;
     background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%);
 
   }
+  .classes_container{
+    position: absolute;
+    z-index: 104 !important;
+    top: 92vh;
+    left: 30.5vw;
+    display: flex;
+    justify-content: space-evenly;
+  
+    
+  }
+ 
+
+  
+  .class_item {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  

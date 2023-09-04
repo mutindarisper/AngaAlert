@@ -14,6 +14,7 @@ import { toast } from 'react-toastify'
 import { MapLibreSearchControl } from "@stadiamaps/maplibre-search-box";
 import "@stadiamaps/maplibre-search-box/dist/style.css";
 import ReactSpeedometer from "react-d3-speedometer";
+import { width } from '@mui/system';
 // import GaugeChart from './charts/GaugeChart';
 
 
@@ -39,6 +40,9 @@ const Map = () => {
     const [parameter, setParameter] = useState(null)
     const [API_KEY] = useState('100185d0ef77f44a0e3f2608acf2516bd6ff0a6a97232bbe0a76b986b7c123cf');
     const params = ['CO', 'NO2',  'SO2', 'Ozone', 'PM 2.5', 'PM 10']
+    const aqi_classes = ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous'] //'Unhealthy for Sensitive Groups'
+    const aqi_colours = ["#94fe83", "#ffe606", "#f09642", "#f54646", "#f026d0", "#644508"]
+    const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
     const zoomin = () => {
         map.current.setZoom(map.current.getZoom() + 0.5)
       }
@@ -472,7 +476,7 @@ map.current.addLayer({
   },
   layout: {
     'text-field': ['get', 'label'],
-    'text-size': 16,
+    'text-size': 14,
     // 'text-offset': [0, -15], // Adjust this value to position the label relative to the circle
     'text-anchor': 'top',
   },
@@ -549,10 +553,40 @@ map.current.addLayer({
        
      </div>
 
+
+
+
+
+
+<div className="classes_container">
+  {
+    aqi_classes.map((class_item, index) => (
+      <div key={index} className='class_item' style={{backgroundColor: aqi_colours[index]}}>{class_item}</div>
+    ))
+  }
+</div>
+
+
+<div className="item-container">
+      {items.map((item, index) => (
+        <div key={index} className="item" >
+          {item}
+        </div>
+      ))}
+    </div>
+     
+
+
+
+
+
+
       {/* add stats panel */}
     {
       index != null ? 
-      <div className="stats_panel">
+      <>
+
+<div className="stats_panel">
       
       <div className="aqi_info">
       <p className="placename">{placename}</p>
@@ -619,9 +653,18 @@ map.current.addLayer({
       
     
       </div>
+
+
+
+
+
+
+      </>
+  
       : ''
     }
-      
+
+ 
     
     </>
    
