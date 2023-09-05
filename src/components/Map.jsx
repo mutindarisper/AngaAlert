@@ -42,7 +42,8 @@ const Map = () => {
     const params = ['CO', 'NO2',  'SO2', 'Ozone', 'PM 2.5', 'PM 10']
     const aqi_classes = ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous'] //'Unhealthy for Sensitive Groups'
     const aqi_colours = ["#94fe83", "#ffe606", "#f09642", "#f54646", "#f026d0", "#644508"]
-    const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+    const items = ['Extremely Low', 'Very Low', 'Low', 'Moderately High', 'High', 'Very High','Extremely High'];
+    const global_colours = ["#0000a4", "#057bff", "#9c179e", "#6becf0", "#19ed19", "#fef72f", "#f92432"];
     const zoomin = () => {
         map.current.setZoom(map.current.getZoom() + 0.5)
       }
@@ -306,6 +307,30 @@ const Map = () => {
  map.current.on('load', async () => {
         // Add a geojson point source.
         // Heatmap layers also work with a vector tile source.
+
+        map.current.addSource('wms-test-source', {
+          'type': 'raster',
+          // use the tiles option to specify a WMS tile source URL
+          // https://maplibre.org/maplibre-style-spec/sources/
+          'tiles': [
+            `http://localhost:8005/geoserver/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&transparent=true&layers=realtime_air_quality:Global_NO2`
+          ],
+          // 'tileSize': 256
+      }); 
+    
+
+    
+    map.current.addLayer(
+        {
+            'id': 'wms-test-layer',
+            'type': 'raster',
+            'source': 'wms-test-source',
+            'paint': {
+              'raster-opacity': 0.3
+            }
+        },
+        //'aeroway_fill'
+    );
        
         
     });
@@ -556,24 +581,33 @@ map.current.addLayer({
 
 
 
+{
+  index?
 
-
-<div className="classes_container">
+  <div className="classes_container">
   {
     aqi_classes.map((class_item, index) => (
       <div key={index} className='class_item' style={{backgroundColor: aqi_colours[index]}}>{class_item}</div>
     ))
   }
 </div>
+:''
+
+}
 
 
-<div className="item-container">
+{
+  index? '' :
+  <div className="item-container">
       {items.map((item, index) => (
-        <div key={index} className="item" >
+        <div key={index} className="item" style={{backgroundColor: global_colours[index]}}>
           {item}
         </div>
       ))}
     </div>
+}
+
+
      
 
 

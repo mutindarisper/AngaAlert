@@ -372,4 +372,25 @@ cursor: pointer;
     padding: 10px;
     border: 1px solid #ccc;
   }
+
+  .item-container{
+    position: absolute;
+    z-index: 104 !important;
+    top: 92vh;
+    left: 30.5vw;
+    display: flex;
+    justify-content: space-evenly;
+  
+    
+  }
+ 
+
+  
+  .item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    color:#000;
+    fontweight: bold;
+  }
+  
   
