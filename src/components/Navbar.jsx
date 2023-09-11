@@ -18,12 +18,13 @@ const Navbar = () => {
             
         <AirIcon 
         // fontSize="large"
+        className='app-icon'
         style={{marginLeft:'-1.5vw', marginTop:'0.9vh',height:'75px', width:'150px'}}
         />
             
         </div>
        
-    <span>AngaAlert</span>
+    <span className='proj_name'>AngaAlert</span>
     <br />
     <p className='tagline'>Providing Realtime Air Quality data around the World</p>
 

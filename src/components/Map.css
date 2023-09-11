@@ -9,7 +9,7 @@
     position: absolute;
     top:10vh;
     width: 100%;
-    height: 100%;
+    height: 90%;
   }
   .gas_container {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -393,4 +393,230 @@ cursor: pointer;
     fontweight: bold;
   }
   
+  @media only screen 
+   and (max-width : 320px) {
+   /* Styles here */
+   .map {
+    position: absolute;
+    top:10vh;
+    width: 420px;
+    height: 632px;
+  }
+
+  /* .stadiamaps-search-box{
+    margin-right: 5vw;
+    margin-top: 12vh;
+    z-index: 105;
+    width: 180px;
+height: 25px;
+outline: none;
+border: none;
+    border-radius: 15px;
+background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%);
+    font-size: 20px; font-weight: 500; color: #fff; padding-left: 30px;
+  } */
+
+  .gas_container {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif !important;
+    position: absolute;
+    top: 20vh;
+    left:5vw;
+    z-index: 103;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* height: 60%;
+    width: 25%;
+    border-radius: 15px;
+background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%); */
+  }
+
+  .gasses{
+    width: 80px;
+    height: 30px;
+    border-radius: 10px;
+/* background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%); */
+color: #fff;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size:12px;
+
+  }
+
+  .btn {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    font-size: 8px;
+    
+    font-weight: lighter;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    overflow: hidden;
+    height: 2rem;
+    background-size: 300% 300%;
+    backdrop-filter: blur(1rem);
+    border-radius: 12px;
+    transition: 0.5s;
+    animation: gradient_301 5s ease infinite;
+    border: none;
+    /* border: double 4px transparent; */
+    background: linear-gradient(180deg, #060606 0%, rgba(250, 62, 96, 0.22) 100%);
+    /* background-origin: border-box;
+    background-clip: content-box, border-box; */
+  }
+
+
+  .item-container{
+    position: absolute;
+    z-index: 104 !important;
+    top: 90vh;
+   color: #fff;
+    left: 1vw;
+    display: flex;
+    justify-content: space-evenly;
+    font-size:9px
   
+    
+  }
+ 
+
+  
+  .item {
+    padding: 1px;
+    border: 1px solid #ccc;
+    color:#bbb;
+    fontweight: bold;
+  }
+
+  .mapcontrols{
+    position: absolute;
+    z-index: 103;
+    top: 76vh;
+    left: 6vw;
+    height: 80px;
+    width: 30px;
+    border-radius: 15px;
+background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%);
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+justify-content: center;
+align-items: center;
+color: #fff;
+cursor: pointer;
+  }
+
+  .stats_panel{
+    position: absolute;
+    z-index: 103;
+    top: 20vh;
+    right: 0.1vw !important;
+    height: 300px;
+    width: 260px;
+    border-radius: 15px;
+    background: linear-gradient(180deg, #000 0%, rgba(242, 79, 109, 0.52) 100%);
+    display: flex;
+    /* gap: -0.1rem; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+
+  }
+
+  .aqi_info{
+    position:'relative';
+    top:2vh;
+    margin-top:40px;
+    background:'blue';
+    height: 200px;
+    width: 320px;
+    /* margin-left: 20px; */
+    
+    color: #fff;
+    display: flex;
+    /* gap: -0.1rem; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: aqua; */
+
+    
+
+  }
+
+  .placename{
+    font-size:14px;
+    font-weight: bold;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+  .air{
+    font-size: 14px;
+    font-weight: bold;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+
+  .index{
+    font-size:14px;
+    font-weight: bold;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+  .level{
+    display: flex;
+    flex-direction: row;
+    font-size:14px;
+    font-weight: bold;
+    display: block;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+
+  }
+  .level2{
+    font-size:14px;
+    font-weight: bold;
+    display: block;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+
+  }
+  .pollutant{
+    font-size:14px;
+    font-weight: bold;
+    display: block;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+
+  }
+
+  .speedometer{
+    width: 180px !important;
+    height: 100px;
+    /* padding: 5px; */
+    /* margin: 20px; */
+  }
+  path.speedo-segment{
+    width: 10px;
+  }
+ 
+}

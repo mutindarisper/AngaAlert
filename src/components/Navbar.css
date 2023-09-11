@@ -55,3 +55,49 @@ border: none;
 background: linear-gradient(180deg, #000 0%, rgba(250, 62, 96, 0.22) 100%); */
     font-size: 18px; font-weight: 600; color: #fff; padding-left: 30px;
   }
+
+  @media only screen 
+  and (max-width : 320px) {
+
+
+    .heading {
+      position: absolute;
+      top:0;
+      width: 420px;
+      height: 700px;
+      margin: 0 !important;
+      padding: 0px;
+      background: #292525;
+      color: white;
+      text-align: start;
+      display: flex;
+      flex-direction: row;
+      /* gap:- 0.1rem; */
+    }
+    
+ 
+  .air{
+    margin-left: -10vw;
+    height:75px;
+    width:150px;
+  }
+  .heading > span {
+    padding: 20px;
+    margin: 0;
+    margin-left: -15.5vw;
+    margin-top: -0.9vh;
+    font-size: 30px;
+    font-weight: 700;
+  }
+  .tagline {
+    
+    /* padding: 20px; */
+    /* margin: 0;
+    margin-left: -43.5vw;
+    margin-top: 7vh;
+    font-size: 12px;
+    font-weight: 500;
+    width: 20%; */
+    display: none;
+  }
+

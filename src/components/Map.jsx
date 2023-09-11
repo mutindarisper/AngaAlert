@@ -337,18 +337,21 @@ const Map = () => {
     const control = new MapLibreSearchControl({
       useMapFocusPoint: true,
       onResultSelected: async (feature) => 
-      { console.log(feature)
+      { console.log(feature.properties.label)
         latitude.current = feature.geometry.coordinates[1]
         longitude.current = feature.geometry.coordinates[0]
 
-        const response = await axios.get(`https://api.ambeedata.com/latest/by-lat-lng?lat=${latitude.current}&lng=${longitude.current}&x-api-key=${API_KEY}`)
-        const airvisual_response = await axios.get(`https://api.airvisual.com/v2/nearest_city?lat=${latitude.current}&lon=${longitude.current}&key=3c715335-77ae-4e5d-9141-02781f31f9d9`)
-        console.log(response.data.stations)
+        // const response = await axios.get(`https://api.ambeedata.com/latest/by-lat-lng?lat=${latitude.current}&lng=${longitude.current}&x-api-key=${API_KEY}`)
+        const airvisual_response = await axios.get(`https://api.airvisual.com/v2/nearest_city?lat=-32.838882&lon=-56.01682&key=3c715335-77ae-4e5d-9141-02781f31f9d9`)
+        // console.log(response.data.stations)
         console.log(airvisual_response.data.data.current, 'air visual data')
-        // console.log(response.data.stations[0].lat, response.data.stations[0].lng, 'coords')
+        // console.log(response.data.stations[0].lat, response.data.stations[0].lng, 'coords') https://api.airvisual.com/v2/nearest_city?lat=${latitude.current}&lon=${longitude.current}&key=3c715335-77ae-4e5d-9141-02781f31f9d9
 
-         city.current = response.data.stations[0].city
-         setPlacename(response.data.stations[0].city)
+        //  city.current = response.data.stations[0].city
+        //  setPlacename(response.data.stations[0].city)
+
+        city.current = feature.properties.label
+         setPlacename(feature.properties.label)
 
 
          setPollutant(airvisual_response.data.data.current.pollution.mainus)
@@ -470,16 +473,16 @@ map.current.addLayer({
   
 });
 
-const popup = new maplibregl.Popup({
-  closeButton: false, // Display a close button or not
-  closeOnClick: false, // Close the popup when the map is clicked
-}).setHTML(`<strong>Concentrations</strong>
-<br> <strong>Nitrogen dioxide: ${response.data.stations[0].NO2}</strong>
- <br> <strong> Sulphur dioxide: ${response.data.stations[0].SO2}</strong>
- <br> <strong> Carbon Monoxide: ${response.data.stations[0].CO}</strong>
- <br> <strong> Ozone: ${response.data.stations[0].OZONE}</strong>
- <br> <strong> PM 10: ${response.data.stations[0].PM10}</strong>
- <br> <strong> PM 2.5: ${response.data.stations[0].PM25}</strong>`); // Set the popup content
+// const popup = new maplibregl.Popup({
+//   closeButton: false, // Display a close button or not
+//   closeOnClick: false, // Close the popup when the map is clicked
+// }).setHTML(`<strong>Concentrations</strong>
+// <br> <strong>Nitrogen dioxide: ${response.data.stations[0].NO2}</strong>
+//  <br> <strong> Sulphur dioxide: ${response.data.stations[0].SO2}</strong>
+//  <br> <strong> Carbon Monoxide: ${response.data.stations[0].CO}</strong>
+//  <br> <strong> Ozone: ${response.data.stations[0].OZONE}</strong>
+//  <br> <strong> PM 10: ${response.data.stations[0].PM10}</strong>
+//  <br> <strong> PM 2.5: ${response.data.stations[0].PM25}</strong>`); // Set the popup content
 
 
 // Add a SymbolLayer for the text label
@@ -629,7 +632,7 @@ map.current.addLayer({
       <p className="air">Air Quality Index</p>
       <p className="index">{index}</p>
       <br />
-      <div className="leves" style={{display:'flex', flexDirection:'row'}}>
+      <div className="leves" style={{display:'flex', flexDirection:'row', color:'#ccc'}}>
       <p className="level">Pollution Level: <span className='level2'>{ aqiclass}</span> </p>
       <p className="pollutant">Main Pollutant: {pollutant}</p>
       </div>
